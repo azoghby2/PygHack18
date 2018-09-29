@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10sp"
+    android:id="@+id/song_item"
+    android:background="@drawable/song_border">
+
+    <TextView
+        android:layout_marginLeft="5sp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Song Name"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:id="@+id/song_name"/>
+
+
+    <TextView
+        android:layout_margin="5sp"
+        android:layout_marginTop="2sp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="First Last"
+        android:textSize="15sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="normal"
+        android:layout_below="@id/song_name"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/song_singer"/>
+
+    <TextView
+        android:layout_margin="5sp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Song Length"
+        android:textSize="15sp"
+        android:textStyle="normal"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_toRightOf="@id/song_singer"
+        android:layout_below="@id/song_name"
+        android:id="@+id/song_length"/>
+
+    <TextView
+        android:layout_margin="5sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        android:textStyle="normal"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/vote_button"
+        android:text="1"
+        android:id="@+id/song_vote"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:padding="2sp"
+        android:text="Vote"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimary"
+        android:textAllCaps="true"
+        android:id="@+id/vote_button"
+        />
+
+</RelativeLayout>
