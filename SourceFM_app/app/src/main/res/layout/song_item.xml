@@ -66,6 +66,7 @@
         android:textColor="@color/colorPrimary"
         android:textAllCaps="true"
         android:id="@+id/vote_button"
+        android:onClick="vote"
         />
 
 </RelativeLayout>

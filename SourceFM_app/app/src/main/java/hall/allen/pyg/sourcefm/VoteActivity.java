@@ -28,5 +28,9 @@ public class VoteActivity extends AppCompatActivity {
         voteQueue.addView(song);
     }
 
-    
+
+    protected void vote(View view) {
+
+        Spotify.vote(this,"view");
+    }
 }
