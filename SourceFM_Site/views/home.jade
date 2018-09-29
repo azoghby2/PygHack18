@@ -1,0 +1,16 @@
+extends layout
+
+block content
+	nav
+		#menuToggle
+			ul
+				li
+					a(href='#') Home
+				li
+					a(href='/user') Account
+					li
+						a(href='/standings') Queue
+				li
+					a#btn-logout(href='/')
+						| Logout
+			.hamburger-menu
