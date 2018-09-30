@@ -25,6 +25,14 @@ public class Song {
         this.votes = votes;
     }
 
+    public Song() {
+        this.id = "abcdef";
+        this.name = "song name";
+        this.singer = "singer";
+        this.length = 110;
+        this.votes = 0;
+    }
+
 
     public View getView(Context context) {
         LayoutInflater vi = (LayoutInflater)

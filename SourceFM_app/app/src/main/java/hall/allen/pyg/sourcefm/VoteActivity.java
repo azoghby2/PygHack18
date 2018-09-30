@@ -1,10 +1,16 @@
 package hall.allen.pyg.sourcefm;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class VoteActivity extends AppCompatActivity {
     Spotify spot;
@@ -19,10 +25,9 @@ public class VoteActivity extends AppCompatActivity {
 
         voteQueue = findViewById(R.id.vote_view);
 
-        addSong("11dFghVXANMlKmJXsNCbNl");
-        addSong("11dFghVXANMlKmJXsNCbNl");
-        addSong("11dFghVXANMlKmJXsNCbNl");
-
+        for (int i = 0; i < 20; i++){
+            addSong(new Song());
+        }
     }
 
     protected void addSong(String id) {
@@ -38,8 +43,13 @@ public class VoteActivity extends AppCompatActivity {
         spot.vote("0");
     }
     protected void vote(View view) {
-        spot.vote((String)view.getTag());
-        //spot.search("alive");
+//        ColorDrawable background = (ColorDrawable) view.getBackground();
+//        if (background.getColor() == getResources().getColor(R.color.colorAccent)) {
+//            (Toast.makeText(this, "Already Voted", Toast.LENGTH_LONG)).show();
+//        }else {
+            view.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            spot.vote((String) view.getTag());
+       // }
     }
 
     protected void submit(View view) {
