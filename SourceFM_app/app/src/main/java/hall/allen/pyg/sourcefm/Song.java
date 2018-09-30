@@ -3,7 +3,6 @@ package hall.allen.pyg.sourcefm;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class Song {

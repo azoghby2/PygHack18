@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -25,11 +27,20 @@ public class VoteActivity extends AppCompatActivity {
 
         voteQueue = findViewById(R.id.vote_view);
 
-        /*for (int i = 0; i < 20; i++){
-            addSong(new Song());
-        }*/
-    }
+        final Handler handler = new Handler();
 
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                clearSongs();
+                updateSongs();
+                Log.d("ASYNC SONGS", "synced");
+                handler.postDelayed(this, 1000);
+            }
+        };
+
+        handler.post(runnable);
+    }
     protected void addSong(String id) {
         Song song = spot.loadById(id);
         voteQueue.addView(song.getView(this));
@@ -41,6 +52,14 @@ public class VoteActivity extends AppCompatActivity {
 
     protected void updateSongs() {
         spot.vote("0");
+        ArrayList<Song> topSongs = spot.topSong;
+        for(Song song: topSongs) {
+            addSong(song);
+        }
+    }
+
+    protected void clearSongs() {
+        voteQueue.removeAllViews();
     }
     protected void vote(View view) {
 //        ColorDrawable background = (ColorDrawable) view.getBackground();
@@ -49,6 +68,7 @@ public class VoteActivity extends AppCompatActivity {
 //        }else {
             view.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             spot.vote((String) view.getTag());
+
        // }
     }
 
@@ -56,4 +76,6 @@ public class VoteActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SubmitActivity.class);
         startActivity(intent);
     }
+
+
 }
