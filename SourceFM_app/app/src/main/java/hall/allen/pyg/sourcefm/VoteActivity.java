@@ -1,12 +1,9 @@
 package hall.allen.pyg.sourcefm;
 
-import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class VoteActivity extends AppCompatActivity {
 
@@ -17,20 +14,17 @@ public class VoteActivity extends AppCompatActivity {
 
 
 
-        LayoutInflater vi = (LayoutInflater)
-                this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View song = vi.inflate(R.layout.song_item,null);
+
         LinearLayout voteQueue = findViewById(R.id.vote_view);
-        ((TextView) song.findViewById(R.id.song_name)).setText("Song");
-        ((TextView) song.findViewById(R.id.song_singer)).setText("Singer");
-        ((TextView) song.findViewById(R.id.song_length)).setText("0:00");
-        ((TextView) song.findViewById(R.id.song_vote)).setText("121");
-        voteQueue.addView(song);
+
+        Song song = new Song("ahfajkfhas8yas8i");
+        voteQueue.addView(song.getView(this));
     }
 
 
     protected void vote(View view) {
-
-        Spotify.vote(this,"view");
+        Object id = view.getTag();
+        //Spotify.search(this, "alive");
+        Spotify.vote(this,(String)view.getTag());
     }
 }
