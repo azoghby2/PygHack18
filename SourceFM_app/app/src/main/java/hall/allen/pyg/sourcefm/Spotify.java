@@ -30,8 +30,7 @@ public class Spotify {
         this.context = context;
     }
 
-    static String token = "BQDjE7FQ8OOrX1YHQrvfj_OZdfhFDvYuXiiQb7z8tZTwoZcFNAFeOBF8so_caZ5zji9AJx5lGutijXfMF1lH6_YUGC-feIxsyelEpzmkxfQ8iUG6jekqvnPXUQCBT9sxwiNseYGSyBp5qRW8JR-F2bqGZKcdB-GoY-zTOniw";
-
+    static String token = "BQDyfr99WvB019k9ZZxRMkXBkhiE2n9TvT4fHpHYynKI80G144UkDCQC0F_YOxySeBI8JV2nFCM0-hZOsyHTWUfaELkpSArd5jdCLfrtsq31RR7S-k04AQMr880U9HFQ1sN8fRjbAwv-uy9UZAYFTV5FWSKCrkHNmGVIdnoD";
     //works
     protected ArrayList<Song> vote(String id) {
         topSong = new ArrayList<>();
@@ -62,7 +61,6 @@ public class Spotify {
         return topSong;
         //return topSong;
     }
-    //TODO fix, not getting an response
     protected Song loadById(String id) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "https://api.spotify.com/v1/tracks/" + id;
@@ -73,14 +71,15 @@ public class Spotify {
                         if (null != response) {
                             Log.d("JSON", "got response");
                             try {
-                                String id = "12312"; //response.getString("id");
-                                String name = "adas";
-                                String singer = "sss";
-                                int length = 222;
+                                String id = response.getString("id");
+                                String name = response.getString("name");
+                                String singer = response.getJSONObject("artists").getJSONObject("0").getString("name");
+                                int length = response.getInt("duration_ms");
                                 int votes = 0;
                                 loadedSong = new Song(id, name, singer, length, votes);
                             } catch (Exception e) {
                                 Log.e("JSON", "failed to get response");
+                                loadedSong = null;
                             }
                         }
                     }
@@ -98,12 +97,12 @@ public class Spotify {
             }
         };
         queue.add(request);
-        return new Song();
-        //return loadedSong;
+        //return new Song();
+        return loadedSong;
     }
 
-    //TODO same as loadById
     protected ArrayList<Song> search(String name) {
+        songResults = new ArrayList<>();
         RequestQueue queue = Volley.newRequestQueue(context);
         String cvtString = stringToGet(name);
         String url = "https://api.spotify.com/v1/search?q=" + cvtString + "&type=track";
@@ -138,6 +137,7 @@ public class Spotify {
         return spaced.replaceAll(" ", "+");
     }
 
+    //process json from our server TODO needs to check vote count
     private ArrayList<Song> topJson2Songs(JSONObject json) {
         ArrayList<Song> songs = new ArrayList<>();
 
@@ -154,6 +154,8 @@ public class Spotify {
         }
         return songs;
     }
+
+    //process json from spotify TODO all processing basically
     private ArrayList<Song> spotJson2Songs(JSONObject json) {
         ArrayList<Song> songs = new ArrayList<>();
 
