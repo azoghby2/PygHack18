@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class Spotify {
@@ -29,22 +30,23 @@ public class Spotify {
     Context context;
     public Spotify(Context context) {
         this.context = context;
+        songResults = new ArrayList<>();
     }
 
-    static String token = "BQBSA4AlkxUtURVCTUh_QvYBsy1HALkOdi9_KuwPUfnLIOfvKH6RYbu-Ri85rshzZKLpm7BGP5FHryG-VwpNYaGD6OvBG-rWeYsp6Tc5I8grGuNJ-RDXmEvQBryGd6AjfeXTH-WSAyT485xtbX7G4qQPhyZk94bz2MxDO_Lr";
+    static String token = "BQC-2xrvFDtZpTbfFz5BlUZObayu4aENXLJfRL3WJhoWBaMAgByLPi4W634htq0YLwYfCZ2Minc1oIUCm7BjWNRMcm-9GuaaBMBjqgmx1m4-WXuauWR869on089OPi7is0rHGENZ-fTWfteLg-SMlWJIDRCj31E-BHVhONvL";
     //works
     protected ArrayList<Song> vote(String id) {
         topSong = new ArrayList<>();
         RequestQueue queue = Volley.newRequestQueue(context);
         //String url = "http://requestbin.fullcontact.com/13b62j61?id="+id;
-        String url = "http://10.194.211.136:2570/vote?id="+id;
+        String url = "http://10.194.211.136:5000/vote?id="+id;
         JsonObjectRequest request = new JsonObjectRequest(url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (null != response) {
                             Log.d("JSON", "got response");
-                            topSong = topJson2Songs(response); //TODO check with server
+                            //topSong = topJson2Songs(response); //TODO check with server
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -56,9 +58,13 @@ public class Spotify {
         queue.add(request);
 
         //todo remove this with actually server working
-        Song testSong = loadById("11dFghVXANMlKmJXsNCbNl");
-        if (testSong!= null)
-            topSong.add(testSong);
+//        Song testSong = loadById("11dFghVXANMlKmJXsNCbNl");
+//        if (testSong!= null)
+//            topSong.add(testSong);
+
+        Song newSOng = loadById("7GhIk7Il098yCjg4BQjzvb");
+        if (newSOng!= null)
+            topSong.add(newSOng);
         //topSong.add(new Song());
         //topSong.add(new Song());
         return topSong;
@@ -109,7 +115,9 @@ public class Spotify {
     }
 
     protected ArrayList<Song> search(String name) {
-        songResults = new ArrayList<>();
+        if (name.isEmpty()) {
+            songResults = null;
+        }
         RequestQueue queue = Volley.newRequestQueue(context);
         String cvtString = stringToGet(name);
         String url = "https://api.spotify.com/v1/search?q=" + cvtString + "&type=track";
@@ -148,15 +156,12 @@ public class Spotify {
     private ArrayList<Song> topJson2Songs(JSONObject json) {
         ArrayList<Song> songs = new ArrayList<>();
 
+        Iterator keys = json.keys();
         try {
-            Song song;
-            for (int i = 0; i < numSongs; i++) {
-                String id = json.getString("id"+i);
-                int votes = json.getInt("votes"+i);
-                song = loadById(id);
-                if (song == null)
-                    return null;
-                song.setVotes(votes);
+            while (keys.hasNext()) {
+                String id = keys.next().toString();
+                Song song = loadById(id);
+                song.setVotes(json.getInt(id));
                 songs.add(song);
             }
             Log.d("JSON", "processed");
@@ -168,20 +173,38 @@ public class Spotify {
 
     //process json from spotify TODO all processing basically
     private ArrayList<Song> spotJson2Songs(JSONObject json) {
-        /*ArrayList<Song> songs = new ArrayList<>();
-
+        ArrayList<Song> songs = new ArrayList<>();
         try {
-            Song song;
-            for (int i = 0; i < numSongs; i++) {
-                String id = json.getString("id"+i);
-                song = loadById(id);
-                songs.add(song);
+            JSONObject tracks = json.getJSONObject("tracks");
+            JSONArray items = json.getJSONArray("items");
+            int count = tracks.getInt("total");
+            for (int i = 0; i < count; i++) {
+                JSONObject resu = items.getJSONObject(i);
+                Song newSong = json2song(resu);
+                songs.add(newSong);
             }
-            Log.d("JSON", "processed");
-        }   catch (JSONException e) {
+        } catch (JSONException e) {
             Log.e("JSON", "json a bitch");
         }
-        return songs;*/
-        return null;
+
+        return songs;
+    }
+
+    private static Song json2song(JSONObject response) {
+        Song conSong;
+        try {
+            String id = response.getString("id");
+            String name = response.getString("name");
+            JSONArray artist = response.getJSONArray("artists");
+            JSONObject o = artist.getJSONObject(0);
+            String singer = o.getString("name");
+            int length = response.getInt("duration_ms")/1000;
+            int votes = 0;
+            conSong = new Song(id, name, singer, length, votes);
+        } catch (Exception e) {
+            Log.e("JSON", "failed to get response");
+            conSong = null;
+        }
+        return conSong;
     }
 }

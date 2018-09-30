@@ -18,6 +18,7 @@ public class VoteActivity extends AppCompatActivity {
     Spotify spot;
     LinearLayout voteQueue;
     ArrayList<String> votedFor;
+    int nullCOunter = 0;  //tracks for network disconnects
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         votedFor = new ArrayList<>();
@@ -59,16 +60,20 @@ public class VoteActivity extends AppCompatActivity {
 
 
     protected void updateSongs() {
-        spot.vote("0");
-        ArrayList<Song> topSongs = spot.topSong;
+
+        ArrayList<Song> topSongs = spot.vote("0");
         if (topSongs != null && !topSongs.isEmpty()) {
             for (Song song : topSongs) {
                 addSong(song);
             }
+            nullCOunter = 0;
         } else {
-            clearSongs();
-            Toast voteFail =  Toast.makeText(this, "Error: Network Failure", Toast.LENGTH_LONG);
-            voteFail.show();
+            nullCOunter++;
+            if (nullCOunter > 3) {
+                clearSongs();
+                Toast voteFail = Toast.makeText(this, "Error: Network Failure", Toast.LENGTH_LONG);
+                voteFail.show();
+            }
         }
     }
 
@@ -84,7 +89,7 @@ public class VoteActivity extends AppCompatActivity {
             } else {
                 view.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                 spot.vote(id);
-                Toast voteSucc = Toast.makeText(this, "Success: Vote submitted", Toast.LENGTH_LONG);
+                Toast voteSucc = Toast.makeText(this, "Success: Vote submitted", Toast.LENGTH_SHORT);
                 voteSucc.show();
                 votedFor.add(id);
             }

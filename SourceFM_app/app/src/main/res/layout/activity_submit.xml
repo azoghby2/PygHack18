@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SubmitActivity">
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"/>
     </LinearLayout>
-    <Button
+    <!--<Button
         android:layout_below="@id/box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,8 +37,9 @@
         android:textAllCaps="true"
         android:id="@+id/vote_button"
         android:onClick="search"
-        />
+        />-->
     <LinearLayout
+        android:layout_below="@id/box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
