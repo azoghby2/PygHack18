@@ -14,22 +14,17 @@ public class Song {
     private String singer;
     private int length; //length in minutes
     private int votes;
-    public Song(String id) {
+
+
+
+    public Song(String id, String name, String singer, int length, int votes) {
         this.id = id;
-        resolve_stats(id);
-    }
-
-    private void resolve_stats(String id) {
-        //TODO spotidy api here
-        name = "songName";
-        singer = "singer";
-        length = 101;
-
         this.name = name;
         this.singer = singer;
         this.length = length;
-        this.votes = 1;
+        this.votes = votes;
     }
+
 
     public View getView(Context context) {
         LayoutInflater vi = (LayoutInflater)

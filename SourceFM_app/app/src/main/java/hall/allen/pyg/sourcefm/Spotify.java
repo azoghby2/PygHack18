@@ -24,13 +24,13 @@ public class Spotify {
 
     ArrayList<Song> topSong;
     ArrayList<Song> songResults;
-    ArrayList<Song> loadedSong;
+    Song loadedSong;
     Context context;
     public Spotify(Context context) {
         this.context = context;
     }
 
-    static String token = "BQAEf9HDCnkRgLC3jChjSmt7pPUEpz_fhdF4htB01H9ZcidSz5JRUEg0nmk3Z828KMcE3QAgbJ_SVGJZIi_JCe2uzvQFwZNifbxxnhWX-g7OmkMdTMSXVgom0o7div6q8jAudsIcftbN0Vqdy7_QmvcuprI11gIQh6PTjjCS";
+    static String token = "BQDSm1FvFpquNhF0nJe7T7zBeMaFC1fPEYfwWGLVr7c9UBglA1oC-1LX7oFWABZrhg926av-J07pWEifwsSGnqjLmcjGhZY6ElgxKp7YUGpsrGXJGHv4AEbqK5YNdyJS1KfVOnay3silLuGzp-CJXOorVAu_mJgQjpE-b3Bu";
     protected ArrayList<Song> vote(String id) {
 
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -59,13 +59,22 @@ public class Spotify {
     protected Song loadById(String id) {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url = "https://api.spotify.com/v1/tracks/" + id;
-        JsonObjectRequest request = new JsonObjectRequest(url, null,
+        final JsonObjectRequest request = new JsonObjectRequest(url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (null != response) {
                             Log.d("JSON", "got response");
-                            loadedSong = spotJson2Songs(response);
+                            try {
+                                String id = "12312"; //response.getString("id");
+                                String name = "adas";
+                                String singer = "sss";
+                                int length = 222;
+                                int votes = 0;
+                                loadedSong = new Song(id, name, singer, length, votes);
+                            } catch (Exception e) {
+
+                            }
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -82,11 +91,7 @@ public class Spotify {
             }
         };
         queue.add(request);
-        if (!loadedSong.isEmpty()) {
-            return loadedSong.get(0);
-        } else {
-            return null;
-        }
+        return loadedSong;
     }
 
     protected ArrayList<Song> search(String name) {
@@ -130,7 +135,7 @@ public class Spotify {
             Song song;
             for (int i = 0; i < numSongs; i++) {
                 String id = json.getString("id"+i);
-                song = new Song(id);
+                song = loadById(id);
                 songs.add(song);
             }
             Log.d("JSON", "processed");
@@ -148,7 +153,7 @@ public class Spotify {
             Song song;
             for (int i = 0; i < numSongs; i++) {
                 String id = json.getString("id"+i);
-                song = new Song(id);
+                song = loadById(id);
                 songs.add(song);
             }
             Log.d("JSON", "processed");
