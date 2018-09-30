@@ -44,7 +44,7 @@ public class Spotify {
                     public void onResponse(JSONObject response) {
                         if (null != response) {
                             Log.d("JSON", "got response");
-                            topSong = topJson2Songs(response);
+                            topSong = topJson2Songs(response); //TODO check with server
                         }
                     }
                 }, new Response.ErrorListener() {

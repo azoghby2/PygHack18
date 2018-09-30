@@ -25,9 +25,9 @@ public class VoteActivity extends AppCompatActivity {
 
         voteQueue = findViewById(R.id.vote_view);
 
-        for (int i = 0; i < 20; i++){
+        /*for (int i = 0; i < 20; i++){
             addSong(new Song());
-        }
+        }*/
     }
 
     protected void addSong(String id) {
