@@ -17,8 +17,10 @@ import java.util.ArrayList;
 public class VoteActivity extends AppCompatActivity {
     Spotify spot;
     LinearLayout voteQueue;
+    ArrayList<String> votedFor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        votedFor = new ArrayList<>();
         super.onCreate(savedInstanceState);
 
         spot = new Spotify(this);
@@ -43,33 +45,49 @@ public class VoteActivity extends AppCompatActivity {
     }
     protected void addSong(String id) {
         Song song = spot.loadById(id);
-        voteQueue.addView(song.getView(this));
+        addSong(song);
+
     }
 
     protected void addSong(Song song) {
-        voteQueue.addView(song.getView(this));
+        View songView = song.getView(this);
+        if (votedFor.contains(song.getID())) {
+            songView.findViewById(R.id.vote_button).setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        }
+        voteQueue.addView(songView);
     }
+
 
     protected void updateSongs() {
         spot.vote("0");
         ArrayList<Song> topSongs = spot.topSong;
-        for(Song song: topSongs) {
-            addSong(song);
+        if (topSongs != null && !topSongs.isEmpty()) {
+            for (Song song : topSongs) {
+                addSong(song);
+            }
+        } else {
+            clearSongs();
+            Toast voteFail =  Toast.makeText(this, "Error: Network Failure", Toast.LENGTH_LONG);
+            voteFail.show();
         }
     }
 
     protected void clearSongs() {
         voteQueue.removeAllViews();
     }
-    protected void vote(View view) {
-//        ColorDrawable background = (ColorDrawable) view.getBackground();
-//        if (background.getColor() == getResources().getColor(R.color.colorAccent)) {
-//            (Toast.makeText(this, "Already Voted", Toast.LENGTH_LONG)).show();
-//        }else {
-            view.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-            spot.vote((String) view.getTag());
+    public void vote(View view) {
+        String id = (String) view.getTag();
 
-       // }
+            if (votedFor.contains(id)) {
+                Toast voteFail =  Toast.makeText(this, "Error: You already voted", Toast.LENGTH_LONG);
+                voteFail.show();
+            }
+            view.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            spot.vote(id);
+            Toast voteSucc =  Toast.makeText(this, "Success: Vote submitted", Toast.LENGTH_LONG);
+            voteSucc.show();
+            votedFor.add(id);
+
     }
 
     protected void submit(View view) {

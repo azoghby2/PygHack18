@@ -54,7 +54,7 @@ public class Spotify {
         });
         queue.add(request);
 
-
+        //todo remove this with actually server working
         topSong.add(new Song());
         topSong.add(new Song());
         topSong.add(new Song());
@@ -70,10 +70,10 @@ public class Spotify {
                     public void onResponse(JSONObject response) {
                         if (null != response) {
                             Log.d("JSON", "got response");
-                            try {
+                            try {//TODO this is untested
                                 String id = response.getString("id");
                                 String name = response.getString("name");
-                                String singer = response.getJSONObject("artists").getJSONObject("0").getString("name");
+                                String singer = response.getJSONObject("artists").getJSONObject("0").getString("name");//dont know if this is remotly right
                                 int length = response.getInt("duration_ms");
                                 int votes = 0;
                                 loadedSong = new Song(id, name, singer, length, votes);
@@ -86,6 +86,7 @@ public class Spotify {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
 
             }
         }) {
@@ -129,7 +130,7 @@ public class Spotify {
             }
         };
         queue.add(request);
-        songResults.add(new Song());
+
         return songResults;
     }
 
@@ -137,7 +138,7 @@ public class Spotify {
         return spaced.replaceAll(" ", "+");
     }
 
-    //process json from our server TODO needs to check vote count
+    //process json from our server TODO test with server
     private ArrayList<Song> topJson2Songs(JSONObject json) {
         ArrayList<Song> songs = new ArrayList<>();
 
@@ -145,7 +146,9 @@ public class Spotify {
             Song song;
             for (int i = 0; i < numSongs; i++) {
                 String id = json.getString("id"+i);
+                int votes = json.getInt("votes"+i);
                 song = loadById(id);
+                song.setVotes(votes);
                 songs.add(song);
             }
             Log.d("JSON", "processed");

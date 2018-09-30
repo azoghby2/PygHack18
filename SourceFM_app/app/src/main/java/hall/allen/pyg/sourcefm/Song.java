@@ -32,7 +32,13 @@ public class Song {
         this.votes = 0;
     }
 
+    public void setVotes(int votes) {
+        this.votes = votes;
+    }
 
+    public String getID() {
+        return this.id;
+    }
     public View getView(Context context) {
         LayoutInflater vi = (LayoutInflater)
                 context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
