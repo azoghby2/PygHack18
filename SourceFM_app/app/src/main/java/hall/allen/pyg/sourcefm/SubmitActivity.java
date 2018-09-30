@@ -23,7 +23,7 @@ public class SubmitActivity extends AppCompatActivity {
         spot = new Spotify(this);
         results = findViewById(R.id.results);
     }
-
+    //TODO mysterously not really working at all
     public void search(View view) {
         ((EditText) findViewById(R.id.edit_query)).getText();
         ArrayList<Song> searchResults = spot.search(((EditText) findViewById(R.id.edit_query)).getText().toString());
@@ -35,7 +35,7 @@ public class SubmitActivity extends AppCompatActivity {
     }
 
     public void displaySearchError() {
-        Toast error = Toast.makeText(getApplicationContext(), "Error: Song could not be found.\nPlease Try again.", Toast.LENGTH_LONG);
+        Toast error = Toast.makeText(getApplicationContext(), "Error: song could not be found.\nPlease Try again.", Toast.LENGTH_LONG);
         error.show();
 
     }

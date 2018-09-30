@@ -81,12 +81,13 @@ public class VoteActivity extends AppCompatActivity {
             if (votedFor.contains(id)) {
                 Toast voteFail =  Toast.makeText(this, "Error: You already voted", Toast.LENGTH_LONG);
                 voteFail.show();
+            } else {
+                view.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                spot.vote(id);
+                Toast voteSucc = Toast.makeText(this, "Success: Vote submitted", Toast.LENGTH_LONG);
+                voteSucc.show();
+                votedFor.add(id);
             }
-            view.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-            spot.vote(id);
-            Toast voteSucc =  Toast.makeText(this, "Success: Vote submitted", Toast.LENGTH_LONG);
-            voteSucc.show();
-            votedFor.add(id);
 
     }
 
