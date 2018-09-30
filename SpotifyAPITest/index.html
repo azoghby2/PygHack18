@@ -47,6 +47,19 @@
         console.log(data);
       }
 
+      $.ajax({
+  type: 'POST',
+  url: 'https://api.spotify.com/v1/playlists/5ZxJDToncX9mBSoH3wMvHQ/tracks?uris=spotify:track:4CwuPBCVMBchfSe0k7knv2',
+  headers: {'Authorization': 'Bearer' + token,
+  contentType: 'application/json'
+  },
+// Authorization: 'playlist_modify_private',
+
+success: function(response) {
+  console.log("It works!!!");
+}
+});
+
     };
 
 </script>
